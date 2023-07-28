@@ -11,5 +11,6 @@
       condition: event.url_check.status == 'down'
       action:
         run_job_template:
-          name: "Auto-Remediate Web Server - Ubuntu"
+          name: "Auto-Remediate Web App"
           organization: "Default"
+          
