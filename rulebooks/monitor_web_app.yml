@@ -1,5 +1,5 @@
 ---
-- name: Hello Events
+- name: Monitor Web App
   hosts: localhost
   sources:
     - ansible.eda.url_check:
@@ -12,3 +12,4 @@
       action:
         run_job_template:
           name: "Configure Web Server - Ubuntu"
+          organization: "Default"
