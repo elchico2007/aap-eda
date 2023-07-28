@@ -1,0 +1,14 @@
+---
+- name: Hello Events
+  hosts: localhost
+  sources:
+    - ansible.eda.url_check:
+        urls:
+          - http://ubuntu1.lab.test:80/
+        delay: 10
+  rules:
+    - name: rebuild webserver if site down
+      condition: event.url_check.status == 'down'
+      action:
+        run_job_template:
+          name: "Configure Web Server - Ubuntu"
