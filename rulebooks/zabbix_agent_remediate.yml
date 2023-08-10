@@ -8,9 +8,12 @@
   rules:
     - name: Run Auto-Remediation playbook
       condition: event.payload is defined
-      actions:
-        - run_playbook:
-            name: "playbooks/auto_remediate_zabbix_agent.yml"
-        - print_event:
-            pretty: true
+      action:
+        run_job_template:
+          name: "Windows - Start Service"
+          organization: "Default"
+          job_args:
+            extra_vars:
+              survey_name: "{{ event.payload.host_host }}"
+              service_name: "Zabbix Agent"
 
