@@ -1,0 +1,13 @@
+---
+- name: Zabbix Agent Auto-Remediation
+  hosts: localhost
+  sources:
+    - ansible.eda.webhook:
+        host: 0.0.0.0
+        port: 5001
+  rules:
+    - name: debug
+      condition: event.payload is defined
+      action:
+        debug:
+          var: event
