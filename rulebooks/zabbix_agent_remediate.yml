@@ -6,8 +6,11 @@
         host: 0.0.0.0
         port: 5001
   rules:
-    - name: debug
+    - name: Run Auto-Remediation playbook
       condition: event.payload is defined
-      action:
-        debug:
-          var: event
+      actions:
+        - run_playbook:
+            name: "playbooks/auto_remediate_zabbix_agent.yml"
+        - print_event:
+            pretty: true
+
