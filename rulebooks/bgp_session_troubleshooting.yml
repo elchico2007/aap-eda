@@ -1,0 +1,19 @@
+---
+- name: BGP session troubleshooting
+  hosts: localhost
+  sources:
+    - ansible.eda.webhook:
+        host: 0.0.0.0
+        port: 5001
+  rules:
+    - name: Run troubleshooting template
+      condition: event.payload is defined
+      action:
+        run_job_template:
+          name: "Cisco - BGP Troubleshoot"
+          organization: "Default"
+          job_args:
+            extra_vars:
+              survey_name: "{{ event.payload.host_host }}"
+              service_name: "Zabbix BGP Troubleshooting"
+
