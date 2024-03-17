@@ -1,0 +1,31 @@
+---
+- name: Zabbix EDA Monitoring
+  hosts: localhost
+  sources:
+    - ansible.eda.webhook:
+        host: 0.0.0.0
+        port: 5001
+  rules:
+    - name: Trigger Remediation Workflow
+      condition: event.payload.event_name is regex("Link down", ignorecase=true)
+      action:
+        debug:
+          msg: "Uplink Down!!!, trigering AAP Workflow!"
+    
+    - name: Run Auto-Remediation Zabbix Agent playbook
+      condition: event.payload.event_name is regex("Zabbix agent is not available", ignorecase=true)
+      action:
+        run_workflow_template:
+          name: "Zabbix Agent Remediation"
+          organization: "Default"
+          job_args:
+            extra_vars:
+              survey_name: "{{ event.payload.host_host }}"
+              service_name: "Zabbix Agent"
+              incident_short_desc: "{{ event.payload.event_name }}"
+              incident_descr: "{{ event.payload.subject }}"
+              artifact:
+                MSG: "{{ event.payload.subject }}"
+              limit: "{{ event.payload.host_host }}"
+
+
