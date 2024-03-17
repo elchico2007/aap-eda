@@ -7,7 +7,7 @@
         port: 5001
       filters:
         - ansible.eda.insert_hosts_to_meta:
-            host_path: "event.payload.host_host"
+            host_path: "{{ event.payload.host_host }}"
   rules:
     - name: Trigger Remediation Workflow
       condition: event.payload.event_name is regex("Link down", ignorecase=true)
@@ -21,6 +21,10 @@
         run_workflow_template:
           name: "Zabbix Agent Remediation"
           organization: "Default"
+          set_facts:
+            fact:
+              meta:
+                hosts: "{{ event.payload.host_host }}"
           job_args:
             extra_vars:
               survey_name: "{{ event.payload.host_host }}"
