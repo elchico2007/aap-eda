@@ -6,13 +6,22 @@
         host: 0.0.0.0
         port: 5001
   rules:
-    - name: Trigger Remediation Workflow
+    - name: Run Auto-Remediation Zabbix Uplink Workflow
       condition: event.payload.event_name is regex("Link down", ignorecase=true)
       action:
-        debug:
-          msg: "Uplink Down!!!, trigering AAP Workflow!"
+        run_workflow_template:
+          name: "Zabbix Uplink Remediation"
+          organization: "Default"
+          job_args:
+            extra_vars:
+              interface: "{{ event.payload.event_tags.interface.0 }}"
+              incident_short_desc: "{{ event.payload.event_name }}"
+              incident_descr: "{{ event.payload.subject }}"
+              artifact:
+                MSG: "{{ event.payload.subject }}"
+            limit: "{{ event.payload.host_host }}"
     
-    - name: Run Auto-Remediation Zabbix Agent playbook
+    - name: Run Auto-Remediation Zabbix Agent Workflow
       condition: event.payload.event_name is regex("Zabbix agent is not available", ignorecase=true)
       action:
         run_workflow_template:
