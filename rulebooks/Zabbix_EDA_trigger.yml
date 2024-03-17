@@ -5,6 +5,9 @@
     - ansible.eda.webhook:
         host: 0.0.0.0
         port: 5001
+      filters:
+        - ansible.eda.insert_hosts_to_meta:
+            host_path: "{{ event.payload.host_host }}"
   rules:
     - name: Trigger Remediation Workflow
       condition: event.payload.event_name is regex("Link down", ignorecase=true)
@@ -26,6 +29,5 @@
               incident_descr: "{{ event.payload.subject }}"
               artifact:
                 MSG: "{{ event.payload.subject }}"
-              limit: "{{ event.payload.host_host }}"
 
 
