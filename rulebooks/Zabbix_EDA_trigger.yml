@@ -8,6 +8,10 @@
       filters:
         - ansible.eda.insert_hosts_to_meta:
             host_path: "{{ event.payload.host_host }}"
+            path_separator: ""
+            host_separator: ""
+            raise_error: true
+            log_error: true
   rules:
     - name: Trigger Remediation Workflow
       condition: event.payload.event_name is regex("Link down", ignorecase=true)
