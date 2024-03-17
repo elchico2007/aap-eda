@@ -8,8 +8,8 @@
       filters:
         - ansible.eda.insert_hosts_to_meta:
             host_path: "{{ event.payload.host_host }}"
-            path_separator: ""
-            host_separator: ""
+            # path_separator: ".lab.test"
+            # host_separator: ""
             raise_error: true
             log_error: true
   rules:
