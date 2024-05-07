@@ -1,0 +1,17 @@
+namespace: elchico2007
+name: eda
+version: 1.0.0
+readme: README.md
+authors:
+  - Luis Valle
+description: Event-Driven Ansible content
+license_file: 'LICENSE'
+tags:
+  - eda
+  - networking
+  - zerotouch
+dependencies: {}
+repository: https://github.com/elchico2007/elchico2007.eda
+documentation: https://github.com/elchico2007/elchico2007.eda/tree/main/docs
+issues: https://github.com/elchico2007/elchico2007.eda/issues
+build_ignore: []
