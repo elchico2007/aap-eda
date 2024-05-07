@@ -2,7 +2,7 @@
 - name: Monitor ZTP
   hosts: localhost
   sources:
-    - ztp:
+    - elchico2007.eda.ztp:
         interface: "eth0"
         filter: "udp dst port 67"
   rules:
