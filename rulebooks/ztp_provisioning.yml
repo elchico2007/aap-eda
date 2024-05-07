@@ -1,0 +1,14 @@
+---
+- name: Monitor ZTP
+  hosts: localhost
+  sources:
+    - ztp:
+        interface: "eth0"
+        filter: "udp dst port 67"
+  rules:
+    - name: Show me event
+      condition: event.vendor_class_identifier is defined
+      action:
+        debug:
+          var: event
+
