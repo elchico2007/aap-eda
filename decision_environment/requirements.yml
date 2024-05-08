@@ -1,0 +1,3 @@
+collections:
+    - name: https://github.com/elchico2007/elchico2007.eda.git
+      type: git
