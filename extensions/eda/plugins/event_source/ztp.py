@@ -6,7 +6,7 @@ from typing import Any, Dict
 
 # Define the entrypoint function
 async def main(queue: asyncio.Queue, args: Dict[str, Any]):
-    interface = args.get("interface", "eth0")
+    interface = args.get("interface", "ens32")
     filter_criteria = args.get("filter", "udp dst port 67")
 
     # Thread-safe queue for inter-thread communication
@@ -25,13 +25,17 @@ async def main(queue: asyncio.Queue, args: Dict[str, Any]):
             if packet.haslayer(Ether):
                 src_mac = packet[Ether].src
                 vendor_ident = None
+                vendor = None
+                model = None
                 if packet.haslayer(DHCP) and type(packet[DHCP].options[3][1]) != list:
                     vendor_ident = packet[DHCP].options[3][1].decode('utf-8')
-                else:
-                    vendor_ident = packet[DHCP].options[3][1]
+                    if "Arista" in vendor_ident:
+                        vendor = vendor_ident.split(';')[0]
+                        model = vendor_ident.split(';')[1]
                 event = {
                     "src_mac": src_mac,
-                    "vendor_class_identifier": vendor_ident
+                    "vendor": vendor,
+                    "model": model
                 }
                 # Put the event in the queue
                 await queue.put(event)
@@ -78,7 +82,7 @@ if __name__ == "__main__":
             print(event)
     
     mock_arguments = {
-        "interface": "eth0",
+        "interface": "ens32",
         "filter": "udp dst port 67"
     }
     
