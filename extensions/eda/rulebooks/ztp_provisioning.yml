@@ -3,12 +3,25 @@
   hosts: localhost
   sources:
     - elchico2007.eda.ztp:
-        interface: "eth0"
-        filter: "udp dst port 67"
+        interface: "ens32"
+        bpf_filter: "udp dst port 67"
   rules:
-    - name: Show me event
-      condition: event.vendor_class_identifier is defined
+    - name: Handle ZTP Arista event
+      condition: event.vendor is search("Arista", ignorecase=true)
+      # To combat event storms, wait 1 minute if seeing same mac multiple times to perform action
+      throttle:
+        once_within: 60 seconds
+        group_by_attributes:
+          - event.src_mac
       action:
-        debug:
-          var: event
-
+        run_workflow_template:
+          name: "Network ZTP"
+          organization: "Default"
+          job_args:
+            extra_vars:
+              src_mac: "{{ event.src_mac }}"
+              incident_short_desc: "ZTP started for '{{ event.src_mac }}'"
+              incident_descr: "ZTP started for '{{ event.src_mac }}' from Vendor '{{ event.vendor }}'"
+              artifact:
+                MSG: "Device MAC: '{{ event.src_mac }}' from Vendor '{{ event.vendor }}' is requesting to be provisioned,\
+                  ZTP process has been initiated."
