@@ -23,5 +23,5 @@
               incident_short_desc: "ZTP started for '{{ event.src_mac }}'"
               incident_descr: "ZTP started for '{{ event.src_mac }}' from Vendor '{{ event.vendor }}'"
               artifact:
-                MSG: "Device MAC: '{{ event.src_mac }}' from Vendor '{{ event.vendor }}' is requesting to be provisioned,\
+                MSG: "Device MAC: '{{ event.src_mac }}' from Vendor '{{ event.vendor }}' is requesting to be provisioned, \
                   ZTP process has been initiated."
