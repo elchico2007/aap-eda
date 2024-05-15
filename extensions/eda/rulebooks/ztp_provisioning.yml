@@ -3,7 +3,7 @@
   hosts: localhost
   sources:
     - elchico2007.eda.ztp:
-        interface: "ens32"
+        interface: "eth0"
         bpf_filter: "udp dst port 67"
   rules:
     - name: Handle ZTP Arista event
