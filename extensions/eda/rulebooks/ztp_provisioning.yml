@@ -7,21 +7,21 @@
         port: 5002
   rules:
     - name: Handle ZTP Arista event
-      condition: event.vendor is search("Arista", ignorecase=true)
+      condition: event.payload.vendor is search("Arista", ignorecase=true)
       # To combat event storms, wait 1 minute if seeing same mac multiple times to perform action
       throttle:
         once_within: 60 seconds
         group_by_attributes:
-          - event.src_mac
+          - event.payload.src_mac
       action:
         run_workflow_template:
           name: "Network ZTP"
           organization: "Default"
           job_args:
             extra_vars:
-              src_mac: "{{ event.src_mac }}"
-              incident_short_desc: "ZTP started for '{{ event.src_mac }}'"
-              incident_descr: "ZTP started for '{{ event.src_mac }}' from Vendor '{{ event.vendor }}'"
+              src_mac: "{{ event.payload.src_mac }}"
+              incident_short_desc: "ZTP started for '{{ event.payload.src_mac }}'"
+              incident_descr: "ZTP started for '{{ event.payload.src_mac }}' from Vendor '{{ event.payload.vendor }}'"
               artifact:
-                MSG: "Device MAC: '{{ event.src_mac }}' from Vendor '{{ event.vendor }}' is requesting to be provisioned, \
+                MSG: "Device MAC: '{{ event.payload.src_mac }}' from Vendor '{{ event.payload.vendor }}' is requesting to be provisioned, \
                   ZTP process has been initiated."
