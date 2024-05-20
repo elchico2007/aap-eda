@@ -8,11 +8,11 @@
   rules:
     - name: Handle ZTP Arista event
       condition: event.payload.vendor is search("Arista", ignorecase=true)
-      # # To combat event storms, wait 1 minute if seeing same mac multiple times to perform action
-      # throttle:
-      #   once_within: 60 seconds
-      #   group_by_attributes:
-      #     - event.payload.src_mac
+      # To combat event storms, wait 1 minute if seeing same mac multiple times to perform action
+      throttle:
+        once_within: 60 seconds
+        group_by_attributes:
+          - event.payload.src_mac
       action:
         run_workflow_template:
           name: "Network ZTP"
