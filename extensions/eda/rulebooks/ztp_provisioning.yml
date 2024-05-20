@@ -2,9 +2,9 @@
 - name: Monitor ZTP
   hosts: localhost
   sources:
-    - elchico2007.eda.ztp:
-        interface: "ens32"
-        bpf_filter: "udp dst port 67"
+    - ansible.eda.webhook:
+        host: 0.0.0.0
+        port: 5002
   rules:
     - name: Handle ZTP Arista event
       condition: event.vendor is search("Arista", ignorecase=true)
