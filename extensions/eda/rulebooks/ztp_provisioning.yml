@@ -25,3 +25,4 @@
               artifact:
                 MSG: "Device MAC: '{{ event.payload.src_mac }}' from Vendor '{{ event.payload.vendor }}' is requesting to be provisioned, \
                   ZTP process has been initiated."
+                success_MSG: "'{{ event.payload.vendor }}' device with MAC '{{ event.payload.src_mac }}' was successfully provisioned."
