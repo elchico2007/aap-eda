@@ -1,15 +1,16 @@
 ---
-- name: Monitor Web App
+- name: Monitor Web Critical Web App
   hosts: localhost
   sources:
     - ansible.eda.url_check:
         urls:
           - http://ubuntu2.lab.test:5000/api/dadjoke
-        delay: 5
-  rules:
-    - name: rebuild webserver if site down
-      condition: event.url_check is defined
-      action:
-        debug:
-          var: event
+        delay: 20
 
+  rules:
+    - name: Rebuild Web App if status is not 200
+      condition: event.url_check.status != 200
+      action:
+        run_workflow_template:
+          name: "Auto Remediate Web App"
+          organization: "Default"
