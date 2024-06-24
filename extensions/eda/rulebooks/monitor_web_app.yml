@@ -9,7 +9,7 @@
 
   rules:
     - name: Rebuild Web App if status is not 200
-      condition: event.url_check.status != 200
+      condition: event.url_check.status_code != 200
       action:
         run_workflow_template:
           name: "Auto Remediate Web App"
